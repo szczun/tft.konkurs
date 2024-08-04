@@ -32,33 +32,31 @@ async function getSummonerPuuid(players_array) {
     return puuid_array;
 }
 
-// async function getSummonerId(summoners_puuid, players_array) {
-//     let summoners_id = [];
+async function getSummonerId(summoners_puuid, players_array) {
+    let summoners_id = [];
 
-//     for (let i = 0; i < summoners_puuid.length; i++) {
-//         const player = players_array[i];
-//         const region = (player.tag === "EUW") ? "euw1" : "eun1";
-//         const url = `http://localhost:3000/riot-api/puuid/${summoners_puuid[i]}?region=${region}`;
-
-//         // console.log(Requesting URL: ${url});
-
-//         try {
-//             const response = await fetch(url);
-//             if (!response.ok) {
-//                 console.log(`Response status: ${response.status} - ${response.statusText}`);
-//                 continue;
-//             }
-
-//             const data = await response.json();
-//             if (data.id) {
-//                 summoners_id.push(data.id);
-//             }
-//         } catch (error) {
-//             console.error('Error:', error);
-//         }
-//     }
-//     return summoners_id;
-// }
+    for (let i = 0; i < summoners_puuid.length; i++) {
+        const player = players_array[i];
+        const region = (player.tag === "EUW") ? "euw1" : "eun1";
+        const object = {
+            puuid: summoners_puuid[i]
+        };
+        const url = `/.netlify/functions/server-id?region=${region}`;
+        console.log(object);
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(object)
+        });
+        const data = await response.json();
+        if (data.id) {
+            summoners_id.push(data.id);
+            console.log(data.id);
+        } else {
+            console.error(`Error fetching summoner ID for puuid ${object.puuid}`);
+        }
+    }
+    return summoners_id;
+}
 
 // async function getSummoner(summoners_id, players_array) {
 //     let summoners = [];
@@ -225,18 +223,17 @@ async function main() {
         console.error("No PUUIDs received or an error occurred.");
         return;
     }
-    console.log(puuid_array_response);
 
-//     console.log('PUUID Array:', puuid_array_response);
+    console.log('PUUID Array:', puuid_array_response);
 
-//     const id_array_response = await getSummonerId(puuid_array_response, players_array);
+    const id_array_response = await getSummonerId(puuid_array_response, players_array);
 
-//     if (!id_array_response || id_array_response.length === 0) {
-//         console.error("No IDs received or an error occurred.");
-//         return;
-//     }
+    if (!id_array_response || id_array_response.length === 0) {
+        console.error("No IDs received or an error occurred.");
+        return;
+    }
 
-//     console.log('IDs Array:', id_array_response);
+    console.log('IDs Array:', id_array_response);
 
 //    const summoners_array_response = await getSummoner(id_array_response, players_array);
 
