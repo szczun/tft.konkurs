@@ -23,10 +23,11 @@ async function getSummonerPuuid(players_array) {
         const url = `/.netlify/functions/server-puuid`;
         const response = await fetch(url, {
             method: "POST",
-            body: JSON.stringify( players_array[i].nickname, players_array[i].tag )
+            body: JSON.stringify( players_array[i] )
         });
         const data = await response.json();
         puuid_array.push(data.puuid);
+        console.log(data.puuid);
     }
     return puuid_array;
 }
