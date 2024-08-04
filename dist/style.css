@@ -1,12 +1,12 @@
 @font-face{
     font-family: 'Friz Quadrata';
-    src: url('../fonts/friz-quadrata-regular-os-5870333951e7c.ttf') format('truetype');
+    src: url('/fonts/friz-quadrata-regular-os-5870333951e7c.ttf') format('truetype');
 }
 
 
 @font-face{
     font-family: 'Friz Quadrata Bold';
-    src: url('../fonts/friz-quadrata-bold-italic-os-5870341205e0f.ttf') format('truetype');
+    src: url('/fonts/friz-quadrata-bold-italic-os-5870341205e0f.ttf') format('truetype');
 }
 
 *{
