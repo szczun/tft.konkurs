@@ -209,7 +209,26 @@ a:hover {
     text-decoration: underline;
 }
 
+.spiral {
+    font-size: 40px;
+    animation: spin 1.5s linear infinite;
+}
 
+@keyframes spin {
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.info-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 
 

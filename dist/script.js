@@ -15,6 +15,10 @@ const nieuczesana = new Player("SiblingsByChance","HOT");
 
 players_array = [kubon, xntentacion, remsua, wujek_luki, agravein, kasix, diables, nieuczesana];
 
+const loadingDiv = document.querySelector(".info-bar")
+
+let isLoadingFlag = true;
+
 // Endpoint do backendu
 async function getSummonerPuuid(players_array) {
     const requests = players_array.map(player =>
@@ -174,6 +178,12 @@ function updateTable(summoners) {
 
         tableBody.appendChild(row);
     });
+}
+
+isLoadingFlag = false;
+
+function setLoading (isLoadingFlag){
+    loadingDiv.classList.toggle(".hidden", isLoadingFlag);
 }
 
 async function main() {
