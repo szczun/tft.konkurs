@@ -15,7 +15,7 @@ const nieuczesana = new Player("SiblingsByChance","HOT");
 
 players_array = [kubon, xntentacion, remsua, wujek_luki, agravein, kasix, diables, nieuczesana];
 
-const loadingDiv = document.querySelector(".info-bar")
+// const loadingDiv = document.querySelector(".info-bar")
 
 let isLoadingFlag = true;
 
@@ -180,7 +180,6 @@ function updateTable(summoners) {
     });
 }
 
-isLoadingFlag = false;
 
 function setLoading (isLoadingFlag){
     loadingDiv.classList.toggle(".hidden", isLoadingFlag);
