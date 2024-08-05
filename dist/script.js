@@ -70,7 +70,8 @@ async function getSummoner(summoners_id, players_array) {
             wins: data.wins || 0,
             losses: data.losses || 0,
             tier_val: 0,
-            rank_val: 0
+            rank_val: 0,
+            tag: player.tag
         };
     });
 }
@@ -153,15 +154,23 @@ function updateTable(summoners) {
         const row = document.createElement('tr');
         row.classList.add('table-row');
 
+        if(player.region === "euw1"){
+            player.region = "euw";
+        }else{
+            player.region = "eune";
+        }
+
+        const profileUrl = `https://lolchess.gg/profile/${player.region}/${player.nickname}-${player.tag}/set12`;
+
         row.innerHTML = `
             <td class="place">${index + 1}.</td>
-            <td class="nickname">${player.nickname}</td>
+            <td class="nickname"><a href="${profileUrl}" target="_blank">${player.nickname}</a></td>
             <td class="tier">${player.tier}
                 <img class="tier-image" src="images/Rank=${player.tier}.png" alt="${player.tier}">
             </td>
             <td class="rank">${player.rank}</td>
-            <td class="lp">${player.lp} lp</td>`
-        ;
+            <td class="lp">${player.lp} lp</td>
+        `;
 
         tableBody.appendChild(row);
     });
