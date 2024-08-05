@@ -9,6 +9,22 @@
     src: url('/fonts/friz-quadrata-bold-italic-os-5870341205e0f.ttf') format('truetype');
 }
 
+@media (max-width: 768px) {
+    .container-for-title {
+        width: 90%; /* Zmniejsza szerokość do 90% szerokości ekranu */
+        padding: 10px; /* Dodaje trochę paddingu, aby zawartość nie przylegała do krawędzi */
+    }
+
+    .tournament-title {
+        font-size: 30px; /* Zmniejsza rozmiar czcionki dla lepszej czytelności na małych ekranach */
+    }
+    
+    .header-image {
+        width: 100%; /* Ustawia szerokość obrazka na 100% szerokości ekranu */
+        height: auto; /* Utrzymuje proporcje obrazka */
+    }
+}
+
 *{
     box-sizing: border-box;
 }
@@ -133,15 +149,6 @@ body{
     text-align: center;
 }
 
-.nickname-link {
-    text-decoration: none; /* Usuń podkreślenie linka */
-    color: #000; /* Kolor tekstu linka */
-}
-
-.nickname-link:hover {
-    text-decoration: underline; /* Dodaj podkreślenie linka przy najechaniu */
-    color: #007bff; /* Kolor linka przy najechaniu */
-}
 
 
 
