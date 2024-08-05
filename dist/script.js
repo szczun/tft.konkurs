@@ -17,99 +17,62 @@ players_array = [kubon, xntentacion, remsua, wujek_luki, agravein, kasix, diable
 
 // Endpoint do backendu
 async function getSummonerPuuid(players_array) {
-    let puuid_array = [];
-
-    for (let i = 0; i < players_array.length; i++) {
-        const url = `/.netlify/functions/server-puuid`;
-        const response = await fetch(url, {
+    const requests = players_array.map(player =>
+        fetch(`/.netlify/functions/server-puuid`, {
             method: "POST",
-            body: JSON.stringify( players_array[i] )
-        });
-        const data = await response.json();
-        puuid_array.push(data.puuid);
-        console.log(data.puuid);
-    }
-    return puuid_array;
+            body: JSON.stringify(player)
+        }).then(response => response.json())
+    );
+    
+    const results = await Promise.all(requests);
+    return results.map(data => data.puuid);
 }
 
 async function getSummonerId(summoners_puuid, players_array) {
-    let summoners_id = [];
-
-    for (let i = 0; i < summoners_puuid.length; i++) {
+    const requests = summoners_puuid.map((puuid, i) => {
         const player = players_array[i];
         const region = (player.tag === "EUW") ? "euw1" : "eun1";
-        var object = {
-            puuid: summoners_puuid[i]
-        };
         const url = `/.netlify/functions/server-id?region=${region}`;
-        console.log(object);
-        const response = await fetch(url, {
+        
+        return fetch(url, {
             method: "POST",
-            body: JSON.stringify(object)
-        });
-        const data = await response.json();
-        if (data.id) {
-            summoners_id.push(data.id);
-            console.log(data.id);
-        } else {
-            console.error(`Error fetching summoner ID for puuid ${object.puuid}`);
-        }
-    }
-    return summoners_id;
+            body: JSON.stringify({ puuid })
+        }).then(response => response.json());
+    });
+
+    const results = await Promise.all(requests);
+    return results.map(data => data.id);
 }
 
 async function getSummoner(summoners_id, players_array) {
-    let summoners = [];
-
-    for (let i = 0; i < summoners_id.length; i++) {
+    const requests = summoners_id.map((id, i) => {
         const player = players_array[i];
         const region = (player.tag === "EUW") ? "euw1" : "eun1";
-        const id_object = {
-            id: summoners_id[i]
-        };
         const url = `/.netlify/functions/server-summoner-info?region=${region}`;
-        console.log(id_object);
-        const response = await fetch(url, {
+
+        return fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(id_object)
-        });
+            body: JSON.stringify({ id })
+        }).then(response => response.json());
+    });
 
-        const data = await response.json();
-        
-        // Sprawdź, czy data zawiera oczekiwane właściwości
-        if (data.tier === undefined) {
-            // Zwróć domyślne wartości w przypadku błędnych danych
-            const summoner = {
-                nickname: player.nickname, // Dodaj nickname
-                tier: "unranked",
-                rank: " ",
-                lp: 0,
-                wins: 0,
-                losses: 0,
-                tier_val: 0,
-                rank_val: 0
-            };
-            summoners.push(summoner);
-            continue;
-        }
-
-        const summoner = {
-            nickname: player.nickname, // Dodaj nickname
-            tier: data.tier,
-            rank: data.rank,
-            lp: data.lp,
-            wins: data.wins,
-            losses: data.losses,
+    const results = await Promise.all(requests);
+    return results.map((data, i) => {
+        const player = players_array[i];
+        return {
+            nickname: player.nickname,
+            tier: data.tier || "unranked",
+            rank: data.rank || " ",
+            lp: data.lp || 0,
+            wins: data.wins || 0,
+            losses: data.losses || 0,
             tier_val: 0,
             rank_val: 0
         };
-
-        summoners.push(summoner);
-    }
-    return summoners;
+    });
 }
 
 function setValueToRank(summoners) {
@@ -212,8 +175,6 @@ async function main() {
         return;
     }
 
-    console.log('PUUID Array:', puuid_array_response);
-
     const id_array_response = await getSummonerId(puuid_array_response, players_array);
 
     if (!id_array_response || id_array_response.length === 0) {
@@ -221,19 +182,13 @@ async function main() {
         return;
     }
 
-    console.log('IDs Array:', id_array_response);
-
    const summoners_array_response = await getSummoner(id_array_response, players_array);
 
     if (!summoners_array_response || summoners_array_response.length === 0) {
         console.error("No summoners received or an error occurred.");
         return;
     }
-    console.log('Summoners:', summoners_array_response);
-
     const sorted_summoners = setValueToRank(summoners_array_response);
-
-    console.log(`Sorted summoners array:` , sorted_summoners);
     updateTable(sorted_summoners);
  }
 
