@@ -8,16 +8,21 @@ exports.handler = async (event, context) => {
 
     try {
         const response = await fetch(url, {
-            header:{
+            headers: {
                 "X-Riot-Token": apiKey
             }
         });
+
+        if (!response.ok) {
+            throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+
         const data = await response.json();
-        return{
+        return {
             statusCode: 200,
-            body: JSON.stringify(data)
+            body: JSON.stringify({ id: data.id })
         };
-    } catch (err){
-        return { statusCode: 422, body: err.stack};
+    } catch (err) {
+        return { statusCode: 422, body: JSON.stringify({ error: err.message }) };
     }
 };

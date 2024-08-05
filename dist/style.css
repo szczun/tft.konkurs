@@ -133,8 +133,15 @@ body{
     text-align: center;
 }
 
+.nickname-link {
+    text-decoration: none; /* Usuń podkreślenie linka */
+    color: #000; /* Kolor tekstu linka */
+}
 
-
+.nickname-link:hover {
+    text-decoration: underline; /* Dodaj podkreślenie linka przy najechaniu */
+    color: #007bff; /* Kolor linka przy najechaniu */
+}
 
 
 

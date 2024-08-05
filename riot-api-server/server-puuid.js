@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
         const data = await response.json();
         return {
             statusCode: 200,
-            body: JSON.stringify(data)
+            body: JSON.stringify({puuid: data.puuid })
         };
     } catch (err){
         return { statusCode: 422, body: err.stack};
