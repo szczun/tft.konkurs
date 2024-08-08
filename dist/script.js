@@ -141,9 +141,10 @@ function setValueToRank(summoners) {
         // Najpierw sortuj według tier_val
         if (a.tier_val !== b.tier_val) {
             return b.tier_val - a.tier_val;
+        } else {
+            return a.rank_val - b.rank_val;
         }
         // Jeśli tier_val jest taki sam, sortuj według rank_val
-        return b.rank_val - a.rank_val;
     });
 
     return summoners;
