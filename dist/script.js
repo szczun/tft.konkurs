@@ -80,8 +80,7 @@ async function getSummoner(summoners_id, players_array) {
     });
 }
 
-function setValueToRank(summoners) {
-    // Przypisz wartości rang
+async function setValueToRank(summoners) {
     for (let player of summoners) {
         switch (player.tier) {
             case "BRONZE":
@@ -130,25 +129,28 @@ function setValueToRank(summoners) {
                 player.rank_val = 4;
                 break;
             default:
-                player.tier_val = 0;
+                player.rank_val = 0;
                 break;
         }
+
+        // Logowanie wartości po przypisaniu
+        console.log(`Player: ${player.nickname}, Tier: ${player.tier} (${player.tier_val}), Rank: ${player.rank} (${player.rank_val})`);
     }
 
-    // Sortowanie według tier_val
-
+    // Sortowanie według tier_val i rank_val
     summoners.sort((a, b) => {
-        // Najpierw sortuj według tier_val
         if (a.tier_val !== b.tier_val) {
-            return b.tier_val - a.tier_val;
+            return b.tier_val - a.tier_val; // Najpierw sortuj malejąco według tier_val
+        } else if (a.rank_val !== b.rank_val) {
+            return a.rank_val - b.rank_val; // Następnie rosnąco według rank_val
         } else {
-            return a.rank_val - b.rank_val;
+            return b.lp - a.lp; // Wreszcie, jeśli rank_val są równe, sortuj malejąco według lp
         }
-        // Jeśli tier_val jest taki sam, sortuj według rank_val
     });
-
+    
     return summoners;
 }
+
 
 function updateTable(summoners) {
     const tableBody = document.querySelector('.player');
@@ -206,7 +208,7 @@ async function main() {
         console.error("No summoners received or an error occurred.");
         return;
     }
-    const sorted_summoners = setValueToRank(summoners_array_response);
+    const sorted_summoners = await setValueToRank(summoners_array_response);
     updateTable(sorted_summoners);
  }
 
