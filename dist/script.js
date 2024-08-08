@@ -143,7 +143,7 @@ function setValueToRank(summoners) {
             return b.tier_val - a.tier_val;
         }
         // Jeśli tier_val jest taki sam, sortuj według rank_val
-        return a.rank_val - b.rank_val;
+        return b.rank_val - a.rank_val;
     });
 
     return summoners;
@@ -173,8 +173,7 @@ function updateTable(summoners) {
                 <img class="tier-image" src="images/Rank=${player.tier}.png" alt="${player.tier}">
             </td>
             <td class="rank">${player.rank}</td>
-            <td class="lp">${player.lp} lp</td>
-        `;
+            <td class="lp">${player.lp} lp</td>`;
 
         tableBody.appendChild(row);
     });
