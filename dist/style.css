@@ -9,21 +9,7 @@
     src: url('/fonts/friz-quadrata-bold-italic-os-5870341205e0f.ttf') format('truetype');
 }
 
-@media (max-width: 768px) {
-    .container-for-title {
-        width: 90%; /* Zmniejsza szerokość do 90% szerokości ekranu */
-        padding: 10px; /* Dodaje trochę paddingu, aby zawartość nie przylegała do krawędzi */
-    }
 
-    .tournament-title {
-        font-size: 30px; /* Zmniejsza rozmiar czcionki dla lepszej czytelności na małych ekranach */
-    }
-    
-    .header-image {
-        width: 100%; /* Ustawia szerokość obrazka na 100% szerokości ekranu */
-        height: auto; /* Utrzymuje proporcje obrazka */
-    }
-}
 
 *{
     box-sizing: border-box;
@@ -59,7 +45,7 @@ body{
 
 .container-for-title{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     flex-direction: row;
     
@@ -71,14 +57,14 @@ body{
 }
 
 .tft-icon{
-    width: 100px;
+    width: 8rem;
     height: auto;
 }
 
 .tournament-title{
     color:  #d3b060;   
     font-style: normal;
-    font-size: 50px;
+    font-size: 3rem;
 }
 
 .content-table{

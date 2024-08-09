@@ -155,33 +155,63 @@ async function setValueToRank(summoners) {
 function updateTable(summoners) {
     const tableBody = document.querySelector('.player');
 
-    tableBody.innerHTML = '';
+    // Clear existing rows
+    while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
+    }
 
     summoners.forEach((player, index) => {
         const row = document.createElement('tr');
         row.classList.add('table-row');
 
+        // Update region value
         if(player.region === "euw1"){
             player.region = "euw";
-        }else{
+        } else {
             player.region = "eune";
         }
 
-        const profileUrl = `https://lolchess.gg/profile/${player.region}/${player.nickname}-${player.tag}/set12`;
+        // Create cells and populate them with the necessary data
+        const placeCell = document.createElement('td');
+        placeCell.classList.add('place');
+        placeCell.textContent = `${index + 1}.`;
 
-        row.innerHTML = `
-            <td class="place">${index + 1}.</td>
-            <td class="nickname"><a href="${profileUrl}" target="_blank">${player.nickname}</a></td>
-            <td class="tier">${player.tier}
-                <img class="tier-image" src="images/Rank=${player.tier}.png" alt="${player.tier}">
-            </td>
-            <td class="rank">${player.rank}</td>
-            <td class="lp">${player.lp} lp</td>`;
+        const nicknameCell = document.createElement('td');
+        nicknameCell.classList.add('nickname');
+        const link = document.createElement('a');
+        link.href = `https://lolchess.gg/profile/${player.region}/${player.nickname}-${player.tag}/set12`;
+        link.target = "_blank";
+        link.textContent = player.nickname;
+        nicknameCell.appendChild(link);
 
+        const tierCell = document.createElement('td');
+        tierCell.classList.add('tier');
+        const img = document.createElement('img');
+        img.classList.add('tier-image');
+        img.src = `images/Rank=${player.tier}.png`;
+        img.alt = player.tier;
+        tierCell.textContent = player.tier; // Add tier text
+        tierCell.appendChild(img);
+
+        const rankCell = document.createElement('td');
+        rankCell.classList.add('rank');
+        rankCell.textContent = player.rank;
+
+        const lpCell = document.createElement('td');
+        lpCell.classList.add('lp');
+        lpCell.textContent = `${player.lp} lp`;
+
+        // Append all cells to the row
+        row.appendChild(placeCell);
+        row.appendChild(nicknameCell);
+        row.appendChild(tierCell);
+        row.appendChild(rankCell);
+        row.appendChild(lpCell);
+
+        // Append the row to the table body
         tableBody.appendChild(row);
     });
 }
-
 
 function setLoading (isLoadingFlag){
     loadingDiv.classList.toggle(".hidden", isLoadingFlag);
